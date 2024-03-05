@@ -16,10 +16,9 @@ reducers:{
     console.log(action.payload+state.creator)
     return action.payload
     },
-  getPosts:(state,action)=>{
+  getPosts:(action)=>{
     return action.payload
   }
 }
 })
-export const {createPost,getPosts}=postSlice.actions
 export default postSlice.reducer
