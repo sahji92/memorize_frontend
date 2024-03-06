@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import FileBase from 'react-file-base64'
-import { useDispatch } from "react-redux";
-import { createPost } from "../../actions/posts";
-//import { createPost } from "../../slices/postSlice";
+import apiConnection from "../../apiConnection";
+import { apiEndpoints, httpMethods } from "../../constants/constants";
 
 
 
@@ -17,15 +16,27 @@ export default function Form() {
     tags: "",
     selectedFile: ""
   });
-  const dispatch=useDispatch();
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit =async (e) => {
 e.preventDefault();
 console.log(postData+"in form.js-24")
-dispatch(createPost(postData))
+const data=await apiConnection(apiEndpoints.CREATE_POST_ENDPOINT,httpMethods.POST,{...postData});
+if(data.status===201){
+  console.log("post created")
+  postData.creator=data.creator
+      postData.title=data.title
+      postData.message=data.message
+      postData.tags=data.tags
+      postData.selectedFile=data.selectedFile
+}
+else{
+  console.log("error"+data)
+}
   };
 
   const clear = () => {};
+  
   return (
     <Paper className={classes.paper}>
       <form
@@ -51,7 +62,7 @@ dispatch(createPost(postData))
           value={postData.title}
           onChange={(e)=>setPostData({...postData,title:e.target.value})}
         />
-        <TextField
+        <TextField 
           name="message"
           variant="outlined"
           label="Message"

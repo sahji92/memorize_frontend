@@ -1,23 +1,37 @@
-import React from 'react'
-import {Post} from './Post/Post'
-import useStyles from './styles'
-import { useSelector } from 'react-redux';
-import { CircularProgress, Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Grid, CircularProgress } from '@material-ui/core';
+import Post from './Post/Post';
+import useStyles from './styles';
+import apiConnection from '../../apiConnection';
+import { apiEndpoints, httpMethods } from '../../constants/constants';
 
-export default function Posts() {
-  const classes=useStyles();
-   const posts=useSelector((state)=>state.posts);
-   console.log(posts)
-   console.log(posts+"in posts.js-10")
+const Posts = () => {
+  const classes = useStyles();
+  const [postData,setPostData] = useState([]);
+
+  const getPosts = async () => {
+    const data = await apiConnection(apiEndpoints.GET_POSTS_ENDPOINT,httpMethods.GET);
+    if (data.status === 200) {
+      setPostData([...data.data])
+      console.log("success"+data)
+      console.log("success"+postData)
+    } 
+    else
+    console.log(data+"error")
+  };
+  useEffect(() => {getPosts()},[]);
+
   return (
-    !posts.length?<CircularProgress/> :(
-      <Grid className={classes.mainContainer} container alignItems='stretch' spacing={3}>
-        {posts.map((post)=>(
-        <Grid key={post._id} item xs={12} sm={6}>
-           <Post post={post}/>
-        </Grid>
+    !(postData.length) ? <CircularProgress /> : (
+      <Grid className={classes.container} container alignItems="stretch" spacing={3}>
+        {postData.map((post) => (
+          <Grid key={post._id} item xs={12} sm={6} md={6}>
+            <Post post={post} />
+          </Grid>
         ))}
       </Grid>
     )
-  )
-}
+  );
+};
+
+export default Posts;
