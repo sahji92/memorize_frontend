@@ -1,3 +1,4 @@
+
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
@@ -19,6 +20,6 @@ export default makeStyles((theme) => ({
     margin: '10px 0',
   },
   buttonSubmit: {
-    marginBottom: 10
+    marginBottom: 10,
   },
 }));

@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Grid, CircularProgress } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+
 import Post from './Post/Post';
 import useStyles from './styles';
-import apiConnection from '../../apiConnection';
-import { apiEndpoints, httpMethods } from '../../constants/constants';
 
-const Posts = () => {
+const Posts = ({ setCurrentId }) => {
+  const posts = useSelector((state) => state.posts);
   const classes = useStyles();
-  const [postData,setPostData] = useState([]);
-
-  const getPosts = async () => {
-    const data = await apiConnection(apiEndpoints.GET_POSTS_ENDPOINT,httpMethods.GET);
-    if (data.status === 200) {
-      setPostData([...data.data])
-      console.log("success"+data)
-      console.log("success"+postData)
-    } 
-    else
-    console.log(data+"error")
-  };
-  useEffect(() => {getPosts()},[]);
 
   return (
-    !(postData.length) ? <CircularProgress /> : (
+    !posts.length ? <CircularProgress /> : (
       <Grid className={classes.container} container alignItems="stretch" spacing={3}>
-        {postData.map((post) => (
+        {posts.map((post) => (
           <Grid key={post._id} item xs={12} sm={6} md={6}>
-            <Post post={post} />
+            <Post post={post} setCurrentId={setCurrentId} />
           </Grid>
         ))}
       </Grid>
