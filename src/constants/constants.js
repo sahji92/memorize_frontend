@@ -4,7 +4,9 @@ export const apiEndpoints={
     DELETE_POST_ENDPOINT:'/posts',
     LIKE_POST_ENDPOINT:'/posts',
     UPDATE_POST_ENDPOINT:'/posts',
-    GOOGLE_LOGIN_ENDPOINT:'/auth'
+    //GOOGLE_LOGIN_ENDPOINT:'/auth',
+    SIGNIN_ENDPOINT:'/user',
+    SIGNUP_ENDPOINT:'/user'
 }
 
 export const httpMethods={

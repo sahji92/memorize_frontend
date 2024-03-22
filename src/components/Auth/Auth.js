@@ -1,47 +1,65 @@
 import React, { useState } from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-import { GoogleLogin } from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Icon from './icon';
 import useStyles from './styles';
 import Input from './input';
 import { useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode }  from 'jwt-decode';
+import { signin, signup } from '../../actions/auth';
 
     const Auth = () => {
+
+  const initialState={firstName:"",lastName:"",email:"",password:"",confirmPassword:""}
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const navigate=useNavigate()
+  const dispatch=useDispatch();
+  const[formData,setFormData]=useState(initialState);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData+"in handlesubmit");
+    if(isSignup){
+     dispatch(signup(formData,navigate))
+    }
+    else{
+     dispatch(signin(formData,navigate))
+    }
+  };
 
-const dispatch=useDispatch();
-  const handleSubmit = () => {};
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    console.log(formData)
+    setFormData({...formData,[e.target.name]:e.target.value})
+  };
   const handleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
-    handleShowPassword(false);
+     setShowPassword(false);
   };
 
   const googleSuccess=async(res)=>{
-    console.log(res)
-    const result=res?.profileObj;
-    const token=res?.tokenId;
-    try {
-      dispatch({type:'AUTH',data:{result,token}});
-      navigate('/')
-    } catch (error) {
-      console.log(error)
-    }
+    // const cre=jwtDecode(res.credential)
+    // console.log(cre)
+    //  const result=res?.profileObj;
+    //  const token=res?.tokenId;
+    // try {
+    //    dispatch({type:'AUTH',data:{cre}});
+    //    navigate('/')
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 
   const googleFailure=(error)=>{
     console.log(error)
-    console.log('Google Sign In was unsuccessful, try again lator!')
+    alert('Google Sign In was unsuccessful, try again lator!')
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -62,8 +80,8 @@ const dispatch=useDispatch();
                   half
                 />
                 <Input
-                  name="firstName"
-                  label="First Name"
+                  name="lastName"
+                  label="Last Name"
                   handleChange={handleChange}
                   half
                 />
@@ -101,7 +119,6 @@ const dispatch=useDispatch();
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
           <GoogleLogin
-            clientId="824172224533-n9bbnto2vo024l0d3cs2uth5r7q1aq6j.apps.googleusercontent.com"
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
@@ -119,7 +136,7 @@ const dispatch=useDispatch();
             onFailure={googleFailure}
             cookiePolicy='single_host_origin'
           />
-          <Grid container justify="flex-end">
+          <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
                 {isSignup
