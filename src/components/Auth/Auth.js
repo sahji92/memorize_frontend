@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Icon from './icon';
 import useStyles from './styles';
 import Input from './input';
 import { useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode }  from 'jwt-decode';
+
 import { signin, signup } from '../../actions/auth';
 
     const Auth = () => {
@@ -44,23 +42,6 @@ import { signin, signup } from '../../actions/auth';
      setShowPassword(false);
   };
 
-  const googleSuccess=async(res)=>{
-    // const cre=jwtDecode(res.credential)
-    // console.log(cre)
-    //  const result=res?.profileObj;
-    //  const token=res?.tokenId;
-    // try {
-    //    dispatch({type:'AUTH',data:{cre}});
-    //    navigate('/')
-    // } catch (error) {
-    //   console.log(error)
-    // }
-  }
-
-  const googleFailure=(error)=>{
-    console.log(error)
-    alert('Google Sign In was unsuccessful, try again lator!')
-  }
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.Paper} elevation={3}>
@@ -118,24 +99,6 @@ import { signin, signup } from '../../actions/auth';
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
-          <GoogleLogin
-            render={(renderProps) => (
-              <Button
-                className={classes.googleButton}
-                color="primary"
-                fullWidth
-                onClick={renderProps.onClick}
-                variant="contained"
-                disabled={renderProps.disabled}
-                startIcon={<Icon />}
-              >
-                Google Sign In
-              </Button>
-            )}
-            onSuccess={googleSuccess}
-            onFailure={googleFailure}
-            cookiePolicy='single_host_origin'
-          />
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
