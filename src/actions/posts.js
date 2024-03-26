@@ -13,6 +13,18 @@ export const getPosts = () => async (dispatch) => {
   }
 };
 
+export const getPostsBySearch = (searchQuery) => async (dispatch) => {
+  try {
+    const  {data: {data} } = await apiConnection(
+      `${apiEndpoints.GET_POSTS_BY_SEARCH_ENDPOINT}/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`,
+      httpMethods.GET
+    );
+    dispatch({ type: "FETCH_BY_SEARCH", payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createPost = (post) => async (dispatch) => {
   try {
     const { data } = await apiConnection(
@@ -55,7 +67,7 @@ export const updatePost = (id, post) => async (dispatch) => {
     try {
       const { data } = await apiConnection(
         `${apiEndpoints.UPDATE_POST_ENDPOINT}/${id}`,
-        httpMethods.PUT,post
+        httpMethods.PUT
       );
       dispatch({ type: 'UPDATE', payload: data });
     } catch (error) {

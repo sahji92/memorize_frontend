@@ -6,7 +6,8 @@ export const apiEndpoints={
     UPDATE_POST_ENDPOINT:'/posts',
     //GOOGLE_LOGIN_ENDPOINT:'/auth',
     SIGNIN_ENDPOINT:'/user',
-    SIGNUP_ENDPOINT:'/user'
+    SIGNUP_ENDPOINT:'/user',
+    GET_POSTS_BY_SEARCH_ENDPOINT:'/posts'
 }
 
 export const httpMethods={
