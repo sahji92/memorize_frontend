@@ -1,10 +1,10 @@
 import apiConnection from "../apiConnection.js";
 import { apiEndpoints, httpMethods } from "../constants/constants.js";
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
   try {
     const { data } = await apiConnection(
-      apiEndpoints.GET_POSTS_ENDPOINT,
+      `${apiEndpoints.GET_POSTS_ENDPOINT}?page=${page}`,
       httpMethods.GET
     );
     dispatch({ type: "FETCH_ALL", payload: data });
