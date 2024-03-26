@@ -16,6 +16,21 @@ export const getPosts = (page) => async (dispatch) => {
   }
 };
 
+export const getPost = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: 'START_LOADING' });
+    const { data } = await apiConnection(
+      `${apiEndpoints.GET_POST_ENDPOINT}/${id}`,
+      httpMethods.GET
+    );
+    dispatch({ type: "FETCH_POST", payload: data });
+    dispatch({ type: 'END_LOADING' });
+
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: 'START_LOADING' });
