@@ -4,11 +4,11 @@ import { apiEndpoints, httpMethods } from "../constants/constants.js";
 export const getPosts = (page) => async (dispatch) => {
   try {
     dispatch({ type: 'START_LOADING' });
-    const { data } = await apiConnection(
+    const { data:{data,currentPage,numberOfPages} } = await apiConnection(
       `${apiEndpoints.GET_POSTS_ENDPOINT}?page=${page}`,
       httpMethods.GET
     );
-    dispatch({ type: "FETCH_ALL", payload: data });
+    dispatch({ type: "FETCH_ALL", payload: {data,currentPage,numberOfPages} });
     dispatch({ type: 'END_LOADING' });
 
   } catch (error) {
@@ -23,7 +23,7 @@ export const getPost = (id) => async (dispatch) => {
       `${apiEndpoints.GET_POST_ENDPOINT}/${id}`,
       httpMethods.GET
     );
-    dispatch({ type: "FETCH_POST", payload: data });
+    dispatch({ type: "FETCH_POST", payload: {post:data} });
     dispatch({ type: 'END_LOADING' });
 
   } catch (error) {
@@ -38,7 +38,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
       `${apiEndpoints.GET_POSTS_BY_SEARCH_ENDPOINT}/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`,
       httpMethods.GET
     );
-    dispatch({ type: "FETCH_BY_SEARCH", payload: data });
+    dispatch({ type: 'FETCH_BY_SEARCH', payload:data});
     dispatch({ type: 'END_LOADING' });
 
   } catch (error) {

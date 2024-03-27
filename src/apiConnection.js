@@ -1,5 +1,4 @@
 import axios from "axios";
-import { json } from "react-router-dom";
 const apiConnection = async(endpoint, method,payload=null,headers={}) => {
   return await axios({
     method:method,

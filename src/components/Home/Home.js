@@ -1,9 +1,9 @@
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Chip } from '@material-ui/core';
+import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@material-ui/core';
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { getPosts, getPostsBySearch } from '../../actions/posts';
+import {  useState } from 'react';
+import {  getPostsBySearch } from '../../actions/posts';
 import useStyles from "./styles";
 import Pagination from '../Pagination';
 import ChipInput from 'material-ui-chip-input';
@@ -62,8 +62,8 @@ const Home = () => {
               onKeyDown={handleKeyPress} />
               <ChipInput
               value={tags}
-              onDelete={handleDelete}
-              onAdd={handleAdd}
+              onDelete={(tag)=>{handleDelete(tag)}}
+              onAdd={(tag)=>{handleAdd(tag)}}
               label="search tags"
               style={{margin:"10px 0"}}
               variant="outlined"/>
